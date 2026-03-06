@@ -1,6 +1,5 @@
 import {
   and,
-  count,
   desc,
   eq,
   getTableColumns,
