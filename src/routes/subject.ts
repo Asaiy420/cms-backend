@@ -18,8 +18,11 @@ router.get('/', async (req: Request, res: Response) => {
   try {
     const { search, department, page = 1, limit = 10 } = req.query;
 
-    const currentPage = Math.max(1, +page);
-    const limitPerPage = Math.max(1, +limit);
+    const currentPage = Math.max(1, parseInt(String(page), 10) || 1); // Ensure page is at least 1
+    const limitPerPage = Math.min(
+      Math.max(1, parseInt(String(limit), 10) || 10),
+      100
+    ); // Limit to a maximum of 100 items per page
     const offset = (currentPage - 1) * limitPerPage;
     const filterCondition = [];
 
@@ -33,7 +36,8 @@ router.get('/', async (req: Request, res: Response) => {
     }
 
     if (department) {
-      filterCondition.push(ilike(departments.name, `%${department}%`)); // Filtering by department name
+      const deptPattern = `${String(department).replace(/[%_]/g, '\\$&')}%`; // regex to escape % and _ characters in the department name
+      filterCondition.push(ilike(departments.name, deptPattern)); // Filtering by department name
     }
 
     const whereClause =
@@ -57,7 +61,7 @@ router.get('/', async (req: Request, res: Response) => {
       .from(subjects)
       .leftJoin(departments, eq(subjects.departmentId, departments.id)) // Join to filter by department name if needed
       .where(whereClause)
-      .orderBy(desc(subjects.created_at))
+      .orderBy(desc(subjects.created_at)) // Order by creation date, newest first
       .limit(limitPerPage)
       .offset(offset);
 
