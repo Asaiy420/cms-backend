@@ -1,0 +1,1 @@
+ALTER TABLE "classes" ALTER COLUMN "teacher_id" SET DATA TYPE text;

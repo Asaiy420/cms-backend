@@ -1,6 +1,6 @@
 {
-  "id": "03ace439-bad4-4c8e-96d3-db3a0fd348a2",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "a0ab187e-aa86-4b6c-9e82-6446942779b6",
+  "prevId": "03ace439-bad4-4c8e-96d3-db3a0fd348a2",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -33,7 +33,7 @@
         },
         "teacher_id": {
           "name": "teacher_id",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
