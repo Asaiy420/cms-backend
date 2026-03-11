@@ -2,6 +2,8 @@ import express, { type Request, type Response } from 'express';
 import subjectsRouter from './routes/subject';
 import cors from 'cors';
 import securityMiddleware from './middleware/security';
+import { toNodeHandler } from 'better-auth/node';
+import { auth } from './lib/auth';
 
 const app = express();
 const PORT = process.env.PORT!;
@@ -13,6 +15,9 @@ app.use(
         credentials: true, // Allow cookies to be sent with requests
     })
 );
+
+app.all('/api/auth/*splat', toNodeHandler(auth));
+
 app.use(express.json());
 app.use(securityMiddleware);
 
